@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Defines a get_hyper method to return pagination info as a dictionary."""
+"""A method that returns pagination data as a dictionary."""
 import csv
 from typing import List
 import math
@@ -15,23 +15,23 @@ def index_range(page, page_size):
 
 
 class Server:
-    """Handles pagination of the baby names dataset."""
+    """Server class for paginating a database of popular baby names."""
     DATA_FILE = "Popular_Baby_Names.csv"
 
     def __init__(self):
         self.__dataset = None
 
     def dataset(self) -> List[List]:
-        """Load and cache the dataset."""
+        """Load and cache the dataset if not already loaded."""
         if self.__dataset is None:
             with open(self.DATA_FILE) as f:
                 reader = csv.reader(f)
                 dataset = [row for row in reader]
-            self.__dataset = dataset[1:]  # Skip header row
+            self.__dataset = dataset[1:]  # Skip the header row
         return self.__dataset
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
-        """Return a page of data from the dataset."""
+        """Get a specific page of the dataset."""
         assert isinstance(page, int) and page > 0
         assert isinstance(page_size, int) and page_size > 0
 
@@ -39,7 +39,7 @@ class Server:
         return self.dataset()[start:end]
 
     def get_hyper(self, page: int = 1, page_size: int = 10) -> dict:
-        """Return a dictionary with pagination details."""
+        """Return pagination data as a dictionary."""
         data = self.get_page(page, page_size)
         total_pages = math.ceil(len(self.dataset()) / page_size)
 
